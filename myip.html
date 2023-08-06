@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8">
+    <!--<link rel="icon" href="assets/images/favicon.ico">-->
+    <link rel='stylesheet' href='assets/css/myip.css'>
+    <title>your ip</title>
+  </head>
+  <body>
+    <div id="main">
+      <h3>your ip is:</h3>
+      <h1 id="ipaddr">0.0.0.0</h1>
+    </div>
+
+  <script type="text/javascript">
+    var userip;
+  </script>
+  <script type="text/javascript" src="https://l2.io/ip.js?var=userip"></script>
+  <script type="text/javascript">
+    document.getElementById("ipaddr").innerHTML = userip;
+  </script>
+  </body>
+</html>

@@ -1,2 +1,2 @@
-# wristcry.github.io
- my shit website (github mirror)
+my shit website (github mirror)
+[neocities](https://wristcry.neocities.org)

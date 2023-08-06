@@ -1,0 +1,17 @@
+#main {
+    text-align: center;
+}
+
+#main textarea {
+    resize: none;
+    text-align: center;
+}
+
+#output {
+    /*text-align: start;*/
+    background-color: rgb(200, 200, 200);
+    width: 30%;
+    white-space: pre-wrap;
+    padding: 5px;
+    margin-left: 35%;
+}

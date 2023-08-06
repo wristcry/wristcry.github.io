@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8">
+    <!--<link rel="icon" href="assets/images/favicon.ico">-->
+    <link rel='stylesheet' href='assets/css/uuidgenerator.css'>
+    <title>uuid(guid) generator</title>
+  </head>
+  <body>
+    <div id="main">
+      <h1>UUID / GUID generator</h1>
+      <h2>input</h2>
+      <p>amount (1-99)</p>
+      <textarea cols="5" rows="1" maxlength="2" id="input_amount">1</textarea>
+      <br>
+      <input type="checkbox" id="input_hyphens" checked>hyphens</input>
+      <input type="checkbox" id="input_braces">braces</input>
+      <input type="checkbox" id="input_commas">commas</input>
+      <input type="checkbox" id="input_uppercase">uppercase</input>
+      <input type="checkbox" id="input_base64">encode in base64</input>
+      <h2>output</h2>
+      <textarea id="output"></textarea>
+      <br>
+      <button onclick="generate()">generate</button>
+    </div>
+    
+    <script> 
+// src: https://stackoverflow.com/questions/105034/how-do-i-create-a-guid-uuid
+function uuidv4() {
+  return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+  );
+}
+
+function generate() {
+    var amount = document.getElementById("input_amount").value;
+    if (!amount || isNaN(amount) || amount > 99 || amount <= 0) return;
+    var hyphens = document.getElementById("input_hyphens").checked;
+    var braces = document.getElementById("input_braces").checked;
+    var commas = document.getElementById("input_commas").checked;
+    var uppercase = document.getElementById("input_uppercase").checked;
+    var base64 = document.getElementById("input_base64").checked;
+    arr = new Array(amount);
+    for (var i = 0; i < amount; i++) {
+        var uuid = uuidv4();
+        if (!hyphens)
+            uuid = uuid.replace(/-/g, "");
+        if (braces)
+            uuid = `{ ${uuid} }`
+        if (uppercase)
+            uuid = uuid.toUpperCase();
+        if (base64)
+            uuid = btoa(uuid);
+        arr[i] = uuid;
+    }
+    var result = "";
+    if (commas)
+        result = arr.join(",\n");
+    else
+        result = arr.join("\n");
+    document.getElementById("output").value = result;
+}
+    </script>
+  </body>
+</html>

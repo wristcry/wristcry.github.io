@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8">
+    <!--<link rel="icon" href="assets/images/favicon.ico">-->
+    <link rel='stylesheet' href='assets/css/aspectratio.css'>
+    <title>aspect ratio converter</title>
+  </head>
+  <body>
+    <div id="main">
+      <h1>Aspect Ratio converter</h1>
+      <h2>input</h2>
+      <p>width</p>
+      <textarea cols="5" rows="1" maxlength="5" id="input_w"></textarea>
+      <p>height</p>
+      <textarea cols="5" rows="1" maxlength="5" id="input_h"></textarea>
+      <h2>output</h2>
+      <pre id="output">it will be here</pre>
+      <button onclick="convert()">convert</button>
+    </div>
+    
+    <script> 
+function gcd(a, b) {
+    while (b > 0) {
+        var rem = a % b;
+        a = b;
+        b = rem;
+    }
+    return a;
+}
+
+function simplify(a, b) {
+    result = new Array(2);
+    var _gcd = gcd(a, b);
+    result[0] = a / _gcd;
+    result[1] = b / _gcd;
+    return result;
+}
+
+function convert() {
+    var w = document.getElementById("input_w").value;
+    if (!w || isNaN(w)) return;
+    var h = document.getElementById("input_h").value;
+    if (!h || isNaN(h)) return;
+    var simplified = simplify(w, h);
+    document.getElementById("output").innerHTML = `${w}x${h} = ${simplified[0]}:${simplified[1]} = ${(simplified[0]/simplified[1]).toFixed(2)}:1`;
+}
+    </script>
+  </body>
+</html>

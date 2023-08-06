@@ -1,0 +1,9 @@
+#main #input_amount {
+    resize: none;
+    text-align: center;
+}
+
+#output {
+    width: 450px;
+    height: 150px;
+}
