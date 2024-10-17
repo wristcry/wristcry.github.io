@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8">
+    <!--<link rel="icon" href="assets/images/favicon.ico">-->
+    <link rel='stylesheet' href='assets/css/stringformatter.css'>
+    <title>string formatter</title>
+  </head>
+  <body>
+    <div id="main">
+      <h1>String formatter (sort of)</h1>
+      <div id="input">
+        <h2>input</h2>
+        <textarea class="text_area" id="input_string"></textarea>
+        <br>
+        <button onclick="do_the_thing()">do the thing</button>
+      </div>
+      <br>
+      <div id="output">
+        <h2>output</h2>
+        <h3>length</h3>
+        <textarea class="text_area" id="output_len"></textarea>
+        <h3>base64 encode/decode</h3>
+        <textarea class="text_area" id="output_base64"></textarea>
+        <h3>utf-8 byte array</h3>
+        <textarea class="text_area" id="output_utf8"></textarea>
+        <h3>html/url encode/decode</h3>
+        <h4>html encoded</h4>
+        <textarea class="text_area" id="output_html_encode"></textarea>
+        <h4>url encoded</h4>
+        <textarea class="text_area" id="output_url_encode"></textarea>
+        <h4>html/url decoded</h4>
+        <textarea class="text_area" id="output_htmlurl_decode"></textarea>
+        <h3>xml escape/unescape</h3>
+        <h4>xml escaped</h4>
+        <textarea class="text_area" id="output_xml_escape"></textarea>
+        <h4>xml unescaped</h4>
+        <textarea class="text_area" id="output_xml_unescape"></textarea>
+      </div>
+    </div>
+    
+    <script>
+// src: https://github.com/google/closure-library/blob/8598d87242af59aac233270742c8984e2b2bdbe0/closure/goog/crypt/crypt.js#L117-L143
+function to_utf8_arr(str) {
+  var out = [], p = 0;
+  for (var i = 0; i < str.length; i++) {
+    var c = str.charCodeAt(i);
+    if (c < 128) {
+      out[p++] = c;
+    } 
+    else if (c < 2048) {
+      out[p++] = (c >> 6) | 192;
+      out[p++] = (c & 63) | 128;
+    } 
+    else if (((c & 0xFC00) == 0xD800) && (i + 1) < str.length && ((str.charCodeAt(i + 1) & 0xFC00) == 0xDC00)) {
+      c = 0x10000 + ((c & 0x03FF) << 10) + (str.charCodeAt(++i) & 0x03FF);
+      out[p++] = (c >> 18) | 240;
+      out[p++] = ((c >> 12) & 63) | 128;
+      out[p++] = ((c >> 6) & 63) | 128;
+      out[p++] = (c & 63) | 128;
+    } 
+    else {
+      out[p++] = (c >> 12) | 224;
+      out[p++] = ((c >> 6) & 63) | 128;
+      out[p++] = (c & 63) | 128;
+    }
+  }
+  return out;
+}
+
+function do_the_thing() {
+  const in_str = document.getElementById("input_string").value;
+  document.getElementById("output_len").value = in_str.length;
+  document.getElementById("output_base64").value = (/^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/).test(in_str) ?
+    decodeURIComponent(atob(in_str).split('').map(function(c) { return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2); }).join('')) : 
+    btoa(encodeURIComponent(in_str).replace(/%([0-9A-F]{2})/g, function(match, p1) { return String.fromCharCode('0x' + p1); }));
+  const utf8_arr = to_utf8_arr(in_str);
+  document.getElementById("output_utf8").value = `length = ${utf8_arr.length}\n${Array.from(utf8_arr).map(function(b) { return '0x' + b.toString(16); }).join(", ")}`;
+  document.getElementById("output_html_encode").value = encodeURIComponent(in_str);
+  document.getElementById("output_url_encode").value = encodeURI(in_str);
+  document.getElementById("output_htmlurl_decode").value = decodeURIComponent(in_str);
+  document.getElementById("output_xml_escape").value = in_str.replace(/[<>&'"]/g, function(c) {
+    switch (c) {
+      case '<': return '&lt;';
+      case '>': return '&gt;';
+      case '&': return '&amp;';
+      case '\'': return '&apos;';
+      case '"': return '&quot;';
+    }
+  });
+  document.getElementById("output_xml_unescape").value = in_str.replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&')
+    .replace(/&apos;/g, "'")
+    .replace(/&quot;/g, '"');
+}
+    </script>
+  </body>
+</html>

@@ -34,32 +34,32 @@ function uuidv4() {
 }
 
 function generate() {
-    var amount = document.getElementById("input_amount").value;
-    if (!amount || isNaN(amount) || amount > 99 || amount <= 0) return;
-    var hyphens = document.getElementById("input_hyphens").checked;
-    var braces = document.getElementById("input_braces").checked;
-    var commas = document.getElementById("input_commas").checked;
-    var uppercase = document.getElementById("input_uppercase").checked;
-    var base64 = document.getElementById("input_base64").checked;
-    arr = new Array(amount);
-    for (var i = 0; i < amount; i++) {
-        var uuid = uuidv4();
-        if (!hyphens)
-            uuid = uuid.replace(/-/g, "");
-        if (braces)
-            uuid = `{ ${uuid} }`
-        if (uppercase)
-            uuid = uuid.toUpperCase();
-        if (base64)
-            uuid = btoa(uuid);
-        arr[i] = uuid;
-    }
-    var result = "";
-    if (commas)
-        result = arr.join(",\n");
-    else
-        result = arr.join("\n");
-    document.getElementById("output").value = result;
+  const amount = document.getElementById("input_amount").value;
+  if (!amount || isNaN(amount) || amount > 99 || amount <= 0) return;
+  const hyphens = document.getElementById("input_hyphens").checked;
+  const braces = document.getElementById("input_braces").checked;
+  const commas = document.getElementById("input_commas").checked;
+  const uppercase = document.getElementById("input_uppercase").checked;
+  const base64 = document.getElementById("input_base64").checked;
+  const arr = new Array(amount);
+  for (var i = 0; i < amount; i++) {
+    var uuid = uuidv4();
+    if (!hyphens)
+      uuid = uuid.replace(/-/g, "");
+    if (uppercase)
+      uuid = uuid.toUpperCase();
+    if (base64)
+      uuid = btoa(uuid);
+    if (braces)
+      uuid = `{ ${uuid} }`;
+    arr[i] = uuid;
+  }
+  var result = "";
+  if (commas)
+    result = arr.join(",\n");
+  else
+    result = arr.join("\n");
+  document.getElementById("output").value = result;
 }
     </script>
   </body>
