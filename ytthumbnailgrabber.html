@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8">
+    <!--<link rel="icon" href="assets/images/favicon.ico">-->
+    <link rel='stylesheet' href='assets/css/ytthumbnailgrabber.css'>
+    <title>YouTube video's thumbnail grabber</title>
+  </head>
+  <body>
+    <div id="main">
+      <h1>YouTube video's thumbnail grabber</h1>
+      <h2>enter link (https://www.youtube.com/watch?v= only)</h2>
+      <textarea cols="60" rows="1" maxlength="60" id="input"></textarea>
+      <h2>output</h2>
+      <pre id="output">it will be here</pre>
+      <button onclick="grab()">grab</button>
+    </div>
+    
+    <script> 
+function grab() {
+  const link = document.getElementById("input").value;
+  if (!link || !link.includes("https://www.youtube.com/watch?v=")) return;
+
+  const url = new URL(link);
+  if (url.pathname !== '/watch' || !url.searchParams.has('v')) return;
+
+  const vid_id = url.searchParams.get('v');
+  if (!vid_id) return;
+
+  document.getElementById("output").innerHTML = ``;
+  document.getElementById("output").innerHTML = `<a href="https://img.youtube.com/vi/${vid_id}/maxresdefault.jpg" target="_blank"><button>maxresdefault (youtube)</button></a> <a href="https://i3.ytimg.com/vi/${vid_id}/maxresdefault.jpg" target="_blank"><button>maxresdefault (ytimg)</button></a>
+  <br><br>
+  <a href="https://img.youtube.com/vi/${vid_id}/sddefault.jpg" target="_blank"><button>sddefault (youtube)</button></a> <a href="https://i3.ytimg.com/vi/${vid_id}/sddefault.jpg" target="_blank"><button>sddefault (ytimg)</button></a>
+  <br><br>
+  <a href="https://img.youtube.com/vi/${vid_id}/hqdefault.jpg" target="_blank"><button>hqdefault (youtube)</button></a> <a href="https://i3.ytimg.com/vi/${vid_id}/hqdefault.jpg" target="_blank"><button>hqdefault (ytimg)</button></a>
+  <br><br>
+  <a href="https://img.youtube.com/vi/${vid_id}/mqdefault.jpg" target="_blank"><button>mqdefault (youtube)</button></a> <a href="https://i3.ytimg.com/vi/${vid_id}/mqdefault.jpg" target="_blank"><button>mqdefault (ytimg)</button></a>
+  <br><br>
+  <a href="https://img.youtube.com/vi/${vid_id}/default.jpg" target="_blank"><button>default (youtube)</button></a> <a href="https://i3.ytimg.com/vi/${vid_id}/default.jpg" target="_blank"><button>default (ytimg)</button></a>`;
+}
+    </script>
+  </body>
+</html>
